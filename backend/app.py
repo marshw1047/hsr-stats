@@ -11,7 +11,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     # make API call to external PI
-    api_url = 'https://api.mihomo.me/sr_info_parsed/601111380'
+    api_url = 'https://api.mihomo.me/sr_info_parsed/600598492'
     params = {'lang': 'en'}
     # sean: 600585642
     # marshall: 600598492

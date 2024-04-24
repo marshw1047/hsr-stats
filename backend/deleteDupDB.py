@@ -9,7 +9,7 @@ def deleteDupDB():
             WHERE rowid NOT IN (
                 SELECT MIN(rowid)
                 FROM characters
-                GROUP BY HP, ATK, DEF, SPD, CR, CD, UID)
+                GROUP BY id, UID)
         ''')
         conn.commit()
     except sqlite3.Error as e:
