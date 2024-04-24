@@ -1,5 +1,6 @@
-class charFields:
+class character:
     def __init__(self):
+        self.id = 0
         self.hp = 0
         self.atk = 0
         self.def_ = 0

@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 import requests
-from charFields import charFields
+from character import character
+from user import user
 
 app = Flask(__name__)
 
@@ -9,7 +10,6 @@ def index():
     # make API call to external PI
     api_url = 'https://api.mihomo.me/sr_info_parsed/600598492'
     params = {'lang': 'en'}
-    # param = {id: 100114514}
     # sean: 600585642
     response = requests.get(api_url, params=params)
 
@@ -17,6 +17,7 @@ def index():
     if response.status_code == 200:
         # Parse the JSON response
         data = response.json()
+        currentUser = user(data.get('player', []).get('uid', []))
         characters = data.get('characters', [])
 
         # characters.additions (blue number in more stats prob relics maybe traces/skills etc)
@@ -24,23 +25,26 @@ def index():
         # check .fields for...(atk, hp, def, spd, crit_rate, crit_dmg) then add .value
 
         if characters:
-            
-            newCharStats = charFields()
-            characterAdditions = characters[0].get('additions', [])
+            for currentChar in characters:
+                newCharStats = character()
+                characterAdditions = currentChar.get('additions', [])
+                newCharStats.id = currentChar.get('id', [])
+                
+                for addition in characterAdditions:
+                    addField = addition.get('field', [])
+                    addValue = addition.get('value', [])
+                    switch_case(newCharStats, addField, addValue)
 
-            for addition in characterAdditions:
-                addField = addition.get('field', [])
-                addValue = addition.get('value', [])
-                switch_case(newCharStats, addField, addValue)
+                characterAttributes = currentChar.get('attributes', [])
 
-            characterAttributes = characters[0].get('attributes', [])
+                for attribute in characterAttributes:
+                    attField = attribute.get('field', [])
+                    attValue = attribute.get('value', [])
+                    switch_case(newCharStats, attField, attValue)
 
-            for attribute in characterAttributes:
-                attField = attribute.get('field', [])
-                attValue = attribute.get('value', [])
-                switch_case(newCharStats, attField, attValue)
+                currentUser.characters.append(newCharStats)
 
-        return newCharStats.__dict__
+        return currentUser.characters[0].__dict__
 
     else:
         # Return an error message if the request failed
