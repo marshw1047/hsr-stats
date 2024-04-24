@@ -2,72 +2,93 @@ from flask import Flask, jsonify
 import requests
 from character import character
 from user import user
-import sqlite3
 from addToDB import addToDB
 from deleteDupDB import deleteDupDB
+import time
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     # make API call to external PI
-    api_url = 'https://api.mihomo.me/sr_info_parsed/600598492'
-    params = {'lang': 'en'}
-    # sean: 600585642
-    # marshall: 600598492
-    # 602608833
-    # 601946224
-    # 601803718
-    # 601097804
-    # 601111380
-    response = requests.get(api_url, params=params)
+    base_url = 'https://api.mihomo.me/sr_info_parsed/'
+    start = 600584642
+    end = start + 2000
+    uid__range = range(start, end)
+    # sean: 600585642, marshall: 600598492, 602608833, 601946224, 601803718, 601097804, 601111380
 
-    # Check if the request was successful (status code 200)
-    if response.status_code == 200:
+    for uidRange in uid__range:
 
-        # Parse the JSON response
-        data = response.json()
-        currentUser = user(data.get('player', []).get('uid', []))
-        characters = data.get('characters', [])
+        uid_url = str(uidRange)
+        api_url = base_url + uid_url
+        params = {'lang': 'en'}
+        response = requests.get(api_url, params=params)
 
-        # Parses thru and adds each characters basic stats and id's to a database 
-        #
-        # NOTES:
-        # characters.additions (blue number in more stats prob relics maybe traces/skills etc)
-        # characters.attributes (base stats)
-        # check .fields for...(atk, hp, def, spd, crit_rate, crit_dmg) then add .value
+        # Skips to next UID if the response is not good
+        if response.ok == False:
+            continue
 
-        if characters:
-            for currentChar in characters:
-                newCharStats = character()
-                characterAdditions = currentChar.get('additions', [])
-                newCharStats.id = currentChar.get('id', [])
-                
-                for addition in characterAdditions:
-                    addField = addition.get('field', [])
-                    addValue = addition.get('value', [])
-                    switch_case(newCharStats, addField, addValue)
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
 
-                characterAttributes = currentChar.get('attributes', [])
+            # Parse the JSON response
+            data = response.json()
+            currentUser = user(data.get('player', []).get('uid', []))
+            characters = data.get('characters', [])
 
-                for attribute in characterAttributes:
-                    attField = attribute.get('field', [])
-                    attValue = attribute.get('value', [])
-                    switch_case(newCharStats, attField, attValue)
+            # Parses thru and adds each characters basic stats and id's to a database 
+            #
+            # NOTES:
+            # characters.additions (blue number in more stats prob relics maybe traces/skills etc)
+            # characters.attributes (base stats)
+            # check .fields for...(atk, hp, def, spd, crit_rate, crit_dmg) then add .value
 
-                currentUser.characters.append(newCharStats)
+            if characters:
+                for currentChar in characters:
 
-            retVal = currentUser.characters[0].__dict__
-            retVal["uid"] = currentUser.uid 
+                    # Skips if character is not max level
+                    if currentChar.get('level') != 80:
+                        continue
+                    
+                    # Gets character id and creates character class for storage
+                    newCharStats = character()
+                    newCharStats.id = currentChar.get('id', [])
 
-        addToDB(currentUser)
-        deleteDupDB()
+                    # Parses for the addition stats and adds
+                    characterAdditions = currentChar.get('additions', [])
+                    for addition in characterAdditions:
+                        addField = addition.get('field', [])
+                        addValue = addition.get('value', [])
+                        switch_case(newCharStats, addField, addValue)
 
-        return retVal
+                    # Parses for the attribute stats and adds 
+                    characterAttributes = currentChar.get('attributes', [])
+                    for attribute in characterAttributes:
+                        attField = attribute.get('field', [])
+                        attValue = attribute.get('value', [])
+                        switch_case(newCharStats, attField, attValue)
 
-    else:
-        # Return an error message if the request failed
-        return jsonify({'error': 'Failed to fetch data from the API'}), 500
+                    currentUser.characters.append(newCharStats)
+
+                 
+
+            # Adds all characters in the current user and deletes any duplicates based on UID and character ID
+            addToDB(currentUser)
+            deleteDupDB()
+
+            # Delay to not overload API
+            # time.sleep(1)
+            print(uidRange)
+
+        else:
+            # Return an error message if the request failed
+            return jsonify({'error': 'Failed to fetch data from the API'}), 500
+        
+    # retVal = currentUser.characters[0].__dict__
+    # retVal["uid"] = currentUser.uid
+
+    return "Success! (I think)"
+    
     
 if __name__ == '__main__':
     app.run(debug=True)
