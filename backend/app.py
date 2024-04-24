@@ -4,16 +4,22 @@ from character import character
 from user import user
 import sqlite3
 from addToDB import addToDB
+from deleteDupDB import deleteDupDB
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     # make API call to external PI
-    api_url = 'https://api.mihomo.me/sr_info_parsed/600598492'
+    api_url = 'https://api.mihomo.me/sr_info_parsed/601111380'
     params = {'lang': 'en'}
     # sean: 600585642
     # marshall: 600598492
+    # 602608833
+    # 601946224
+    # 601803718
+    # 601097804
+    # 601111380
     response = requests.get(api_url, params=params)
 
     # Check if the request was successful (status code 200)
@@ -55,6 +61,7 @@ def index():
             retVal["uid"] = currentUser.uid 
 
         addToDB(currentUser)
+        deleteDupDB()
 
         return retVal
 
