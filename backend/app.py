@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 import requests
 from character import character
 from user import user
+import sqlite3
+from addToDB import addToDB
 
 app = Flask(__name__)
 
@@ -11,15 +13,20 @@ def index():
     api_url = 'https://api.mihomo.me/sr_info_parsed/600598492'
     params = {'lang': 'en'}
     # sean: 600585642
+    # marshall: 600598492
     response = requests.get(api_url, params=params)
 
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
+
         # Parse the JSON response
         data = response.json()
         currentUser = user(data.get('player', []).get('uid', []))
         characters = data.get('characters', [])
 
+        # Parses thru and adds each characters basic stats and id's to a database 
+        #
+        # NOTES:
         # characters.additions (blue number in more stats prob relics maybe traces/skills etc)
         # characters.attributes (base stats)
         # check .fields for...(atk, hp, def, spd, crit_rate, crit_dmg) then add .value
@@ -44,7 +51,12 @@ def index():
 
                 currentUser.characters.append(newCharStats)
 
-        return currentUser.characters[0].__dict__
+            retVal = currentUser.characters[0].__dict__
+            retVal["uid"] = currentUser.uid 
+
+        addToDB(currentUser)
+
+        return retVal
 
     else:
         # Return an error message if the request failed
@@ -53,7 +65,7 @@ def index():
 if __name__ == '__main__':
     app.run(debug=True)
 
-
+# Function to compute base stats
 def switch_case(newCharStats, field, value):
     if field == 'hp':
         newCharStats.hp += value
