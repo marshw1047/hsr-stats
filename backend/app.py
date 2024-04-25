@@ -12,7 +12,7 @@ app = Flask(__name__)
 def index():
     # make API call to external PI
     base_url = 'https://api.mihomo.me/sr_info_parsed/'
-    start = 600584642
+    start = 600784642
     end = start + 2000
     uid__range = range(start, end)
     # sean: 600585642, marshall: 600598492, 602608833, 601946224, 601803718, 601097804, 601111380
