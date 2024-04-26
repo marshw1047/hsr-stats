@@ -12,8 +12,9 @@ import About from "./Views/About.js"
 import Average from "./Views/Average.js"
 
 function App() {
+  
   return (
-    <div> 
+    <div className="bg-custom-greyblue text-gray-100"> 
       <Router>
 
         <Header />

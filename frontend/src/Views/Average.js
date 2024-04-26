@@ -1,4 +1,4 @@
-import axios from 'axios'
+// import axios from 'axios'
 
 function Average() {
 
@@ -6,7 +6,7 @@ function Average() {
 
     return (
         <div>
-            <h1 className="font-bold text-2xl mb-3">Average Character Stats</h1>
+            <h1 className="font-bold text-2xl pb-3">Average Character Stats</h1>
             <p>
                 Hoping for this to display stats once the API stuff gets figured out
             </p>

@@ -5,8 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundColor: {
+      colors: {
         'black-t-50': 'rgba(0,0,0,0.5)',
+        'custom-greyblue' : '#111018',
       }
     },
   },
