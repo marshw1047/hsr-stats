@@ -19,7 +19,14 @@ function HistogramChart( {dataKey} ) {
         const rawData = await response.json();
         // Group ATK values into increments of 10 and count frequency within each group
         const groupedData = rawData.reduce((accumulator, item) => {
-          const roundedNum = Math.round(item[dataKey] / 100) * 100; // Round to nearest 100
+          let roundedNum = Math.round(item[dataKey] / 100) * 100; // Round to nearest 100
+          if (dataKey == "SPD") {
+            roundedNum = Math.round(item[dataKey] / 5) * 5; // Rounded to nearest 5
+          }
+          else if (dataKey == "CR" || dataKey == "CD") {
+            roundedNum = Math.round(item[dataKey] / 0.01); // Rounded to nearest 5
+            console.log(roundedNum);
+          }
           accumulator[roundedNum] = (accumulator[roundedNum] || 0) + 1; // Count frequency
           return accumulator;
         }, {});

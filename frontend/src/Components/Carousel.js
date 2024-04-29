@@ -27,6 +27,12 @@ const Carousel = () => {
       <div>
         <HistogramChart dataKey="SPD"/>
       </div>
+      <div>
+        <HistogramChart dataKey="CR"/>
+      </div>
+      <div>
+        <HistogramChart dataKey="CD"/>
+      </div>
       {/* Add more slides as needed */}
     </Slider>
   );
