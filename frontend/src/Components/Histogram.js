@@ -56,8 +56,11 @@ function HistogramChart( {dataKey} ) {
             dataKey={ dataKey } 
             type="category" // Set type to category for discrete x-axis values
             domain={['auto', 'auto']} // Set domain to auto to include all data points
+            tick={{ fill: '#ffffff' }}
           />
-          <YAxis />
+          <YAxis 
+            tick={{ fill: '#ffffff' }}
+          />
           <Tooltip 
             formatter={(value) => [`${value} times`, 'Frequency']}
           />
