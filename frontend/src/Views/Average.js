@@ -1,15 +1,14 @@
-// import axios from 'axios'
+import Carousel from '../Components/Carousel.js'
 
 function Average() {
-
-    // axios.get, watch Building Your First Web Application - iMProgrammer @ 1:20:21 https://www.youtube.com/watch?v=NzpbupWoIV4
-
     return (
-        <div>
+        <div className="bg-[url('../assets/StarRailRes/image/character_portrait/1005.png')] bg-cover bg-center text-gray-100 h-screen px-5 pt-5">
             <h1 className="font-bold text-2xl pb-3">Average Character Stats</h1>
             <p>
                 Hoping for this to display stats once the API stuff gets figured out
             </p>
+
+            <Carousel />
         </div>
     )
 }

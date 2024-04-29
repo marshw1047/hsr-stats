@@ -1,7 +1,11 @@
 from flask import Flask, jsonify, make_response
 import sqlite3
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+# Allow requests from localhost:3000
+CORS(app, resources={r"/hsr_character_stats/*": {"origins": "http://localhost:3000"}})
 
 # Gets all characters in database
 @app.route('/hsr_character_stats', methods=['GET'])

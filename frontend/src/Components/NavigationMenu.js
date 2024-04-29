@@ -1,4 +1,3 @@
-import { faPersonCirclePlus } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 
 function NavigationMenu(props) {

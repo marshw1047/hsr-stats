@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
 } from "react-router-dom"
 import Header from './Components/Header.js'
 import Footer from './Components/Footer.js'
@@ -19,7 +18,7 @@ function App() {
 
         <Header />
 
-        <div className="p-3">
+        <div className="m-3">
           <Routes>
             <Route exact path="/" element={<Home />}/>
             <Route path="/average" element={<Average />}/>
