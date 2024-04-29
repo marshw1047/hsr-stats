@@ -16,13 +16,16 @@ const Carousel = () => {
   return (
     <Slider {...settings}>
       <div>
-        <HistogramChart />
+        <HistogramChart dataKey="HP"/>
       </div>
       <div>
-        <HistogramChart />
+        <HistogramChart dataKey="ATK"/>
       </div>
       <div>
-        <HistogramChart />
+        <HistogramChart dataKey="DEF"/>
+      </div>
+      <div>
+        <HistogramChart dataKey="SPD"/>
       </div>
       {/* Add more slides as needed */}
     </Slider>
