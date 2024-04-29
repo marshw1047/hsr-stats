@@ -15,7 +15,7 @@ function HistogramChart( {dataKey} ) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('http://127.0.0.1:5000/hsr_character_stats/1005');
+        const response = await fetch('http://127.0.0.1:5000/hsr_character_stats/1212');
         const rawData = await response.json();
         // Group ATK values into increments of 10 and count frequency within each group
         const groupedData = rawData.reduce((accumulator, item) => {
@@ -25,7 +25,6 @@ function HistogramChart( {dataKey} ) {
           }
           else if (dataKey == "CR" || dataKey == "CD") {
             roundedNum = Math.round(item[dataKey] / 0.01); // Rounded to nearest 5
-            console.log(roundedNum);
           }
           accumulator[roundedNum] = (accumulator[roundedNum] || 0) + 1; // Count frequency
           return accumulator;
@@ -46,7 +45,7 @@ function HistogramChart( {dataKey} ) {
 
   return (
     <div className="w-3/4 mx-auto m-5 bg-black-t-50">
-      <h1>Histogram of Kafka { dataKey } Value</h1>
+      <h1>Histogram of Jingliu { dataKey } Value</h1>
       <ResponsiveContainer width="100%" height={400}>
         <BarChart
           data={data}
