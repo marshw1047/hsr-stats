@@ -20,10 +20,10 @@ function HistogramChart( {dataKey} ) {
         // Group ATK values into increments of 10 and count frequency within each group
         const groupedData = rawData.reduce((accumulator, item) => {
           let roundedNum = Math.round(item[dataKey] / 100) * 100; // Round to nearest 100
-          if (dataKey == "SPD") {
+          if (dataKey === "SPD") {
             roundedNum = Math.round(item[dataKey] / 5) * 5; // Rounded to nearest 5
           }
-          else if (dataKey == "CR" || dataKey == "CD") {
+          else if (dataKey === "CR" || dataKey === "CD") {
             roundedNum = Math.round(item[dataKey] / 0.01); // Rounded to nearest 5
           }
           accumulator[roundedNum] = (accumulator[roundedNum] || 0) + 1; // Count frequency
@@ -41,10 +41,10 @@ function HistogramChart( {dataKey} ) {
     }
 
     fetchData();
-  }, []);
+  }, [dataKey]);
 
   return (
-    <div className="w-3/4 mx-auto m-5 bg-black-t-50">
+    <div className="w-3/4 h-1/2 mx-auto m-5 bg-black-t-50">
       <h1>Histogram of Jingliu { dataKey } Value</h1>
       <ResponsiveContainer width="100%" height={400}>
         <BarChart
