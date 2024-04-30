@@ -3,14 +3,14 @@ import { Link } from "react-router-dom"
 function NavigationMenu(props) {
     return (
         <div>
-            <span className="font-bold py-3 block text-black">
-                Menu List
+            <span className="font-bold py-3 block font-bold text-4xl">
+                Menu
             </span>
             <ul>
                 <li>
                     <Link 
                         to="/" 
-                        className="text-blue-500 py-3 border-t border-b block"
+                        className="text-white py-3 border-black border-t block"
                         onClick={props.closeMenu}
                     >
                         Home
@@ -18,7 +18,7 @@ function NavigationMenu(props) {
                 </li>
                 <Link 
                         to="/average" 
-                        className="text-blue-500 py-3 border-t border-b block"
+                        className="text-white py-3 border-black border-t block"
                         onClick={props.closeMenu}
                     >
                         Honkai Star Rail: Character Base Stats
@@ -26,7 +26,7 @@ function NavigationMenu(props) {
                 <li>
                     <Link 
                         to="/about" 
-                        className="text-blue-500 py-3 border-b block"
+                        className="text-white py-3 border-black border-t block"
                         onClick={props.closeMenu}
                     >
                         About

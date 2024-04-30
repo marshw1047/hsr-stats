@@ -13,12 +13,14 @@ import Average from "./Views/Average.js"
 function App() {
   
   return (
-    <div className="bg-custom-greyblue text-gray-100"> 
+    <div className="text-gray-100 antialiased bg-gray-900 bg-opacity-90"> 
+    {/* bg-custom-greyblue 
+      bg-gray-900 bg-opacity-90*/}
       <Router>
 
         <Header />
 
-        <div className="m-3">
+        <div>
           <Routes>
             <Route exact path="/" element={<Home />}/>
             <Route path="/average" element={<Average />}/>

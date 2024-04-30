@@ -28,6 +28,7 @@ function Navigation(){
                 <FontAwesomeIcon
                     icon={faBars}
                     onClick={() => setShowMenu(!showMenu)}
+                    className="border-black block"
                 />
             </span>
 
@@ -51,7 +52,7 @@ function Navigation(){
                     <animated.div 
                         key={key} 
                         style={props}
-                        className="fixed bg-white top-0 left-0 w-4/5 h-full z-50 shadow p-3"
+                        className="fixed bg-gray-600 bg-opacity-90 top-0 left-0 w-4/5 h-full z-50 shadow p-3"
                     >
 
                         <NavigationMenu 
